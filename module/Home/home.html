@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<style>
+.st-sort-ascent:before{
+				content: '\25B2';
+	  }
+
+	  .st-sort-descent:before{
+				content: '\25BC';
+	  }
+section{
+background: #f7f7f7;
+  border-radius: 3px;
+  margin: 1em;
+  position: relative !important;
+  padding-bottom: 10px;
+}
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover > a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+.done{
+text-decoration : line-through; color : #ccc
+}
+.red{background-color : red;}
+.lightGreen{background-color : lightgreen;}
+span.psw {
+    float: right;
+    //padding-top: 16px;
+}
+.ng-scope{
+          height: 100%;
+        }
+.share{
+ 	 margin-top: 1px;
+     margin-right: 2px;
+     position:absolute;
+     top:0;
+     right:0;
+}
+.menuButton{
+	text-decoration: none;
+	border: none;
+}
+.content{
+	padding-left: 10px
+}
+</style>
+</head>
+<body>
+<div layout="column" ng-app= 'Home' ng-controller= 'homeController' flex>
+<div layout="row">
+<md-toolbar>   
+    <md-button aria-label="Open side menu" class="md-icon-button" ng-click="toggleList()" hide-gt-sm>
+    <md-icon md-menu-origin md-svg-icon="icon/menu_24px.svg"></md-icon>
+    </md-button>
+    <h3 style='text-align: center'>Angular Project</h3>
+       <md-menu md-offset="0 -7">
+          <md-button aria-label="Open user menu" class="md-icon-button share" ng-click="$mdMenu.open($event)">
+            <md-icon md-menu-origin md-svg-icon="icon/user_24px.svg"></md-icon>
+          </md-button>
+          <md-menu-content width="4">
+            <md-menu-item>
+              <span md-menu-align-target>Hello,{{user}}</span> 
+            </md-menu-item>
+            <md-menu-item>
+              <md-button>Logout</md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+  </md-toolbar>
+</div>
+
+  <div class="container" layout="row" flex>
+    <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-sidenav-left md-whiteframe-2dp" md-component-id="left" >
+	<md-list ng-click='toggleList()'>
+    <md-list-item  ng-click="showChilds(menuOption)" style="margin-left: 10px;"ng-repeat-start="menuOption in menuOptions">                  
+  {{menuOption.name}}
+	</md-list-item>
+	<md-list-item ng-if = "menuOption.open && menuOption.type=='toggle'" style="margin-left: 50px;" ng-repeat-end ng-repeat="item in menuOption.child" ng-click="selectOption(item)">                  
+  {{item.name}}
+	</md-list-item>
+	</md-list>
+    </md-sidenav> 
+    <md-content class= "content" id="content" flex layout="column" ng-if="selected.subcontent">
+     <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{selected.name}}</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="start center">
+          <md-card-icon-actions>
+            <md-button class="md-icon-button" aria-label="Favorite">
+              <md-icon md-svg-icon="icon/favorite_24px.svg"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Share">
+              <md-icon md-svg-icon="icon/share_24px.svg"></md-icon>
+            </md-button>
+          </md-card-icon-actions>
+          <md-button>Action 1</md-button>
+          <md-button>Action 2</md-button>
+        </md-card-actions>
+        <md-card-content>
+          <p>
+            {{selected.content}}
+          </p>
+        </md-card-content>
+      </md-card>
+     <md-button class= "md-icon-button share" md-no-ink aria-label= "share" ng-click= 'share(menuOption)'>
+     <md-icon md-svg-icon= 'icon/share_24px.svg'></md-icon>
+     </md-button>
+    </md-content>
+
+    <!--%%%%%%%%%%%%%  Content for ToDo App  %%%%%%%%%%%%%%% -->
+    <md-content class="content" id="content" flex layout="column"
+				ng-if="selected.name == 'ToDo App'" ng-controller='ToDoController'  style= "padding-top: 50px">
+				<h2 style="padding-left: 10px">ToDo App</h2>
+				<section style="padding-top: 10px; padding-left: 10px">
+				<md-input-container md-no-float class="md-block">
+     				 <input ng-model="newToDo" type="text" placeholder="ToDo Items">
+     				 <md-button class="md-raised md-primary" style="border-radius:5px 5px 5px 5px" ng-click='addToDo()'>Add</md-button>	
+   			    </md-input-container>
+							
+			  </section>     
+			  <md-content class="md-padding">
+    <md-nav-bar
+      md-selected-nav-item="currentNavItem"
+      nav-bar-aria-label="navigation links">
+      <md-nav-item md-nav-click="goto('All')" name="All">
+        ALL
+      </md-nav-item>
+      <md-nav-item md-nav-click="goto('Active')" name="Active">
+        ACTIVE
+      </md-nav-item>
+      <md-nav-item md-nav-click="goto('Completed')" name="Completed">
+        COMPLETED
+      </md-nav-item>
+      <!-- these require actual routing with ui-router or ng-route, so they
+      won't work in the demo
+      <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+      <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+      You can also add options for the <code>ui-sref-opts</code> attribute.
+      <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+        Page Six
+      </md-nav-item>
+      -->
+    </md-nav-bar>
+    <div class="ext-content">
+      <!-- External content for `<span>{{currentNavItem}}</span>`. -->
+       <section style="padding-top: 10px"><div ng-if="currentNavItem == 'All'" ng-repeat='toDoAll in toDos' flex>
+			<input type="checkbox" ng-model='toDoAll.done' /> <span ng-class="{'done':toDoAll.done }">{{toDoAll.title}}</span>
+			</div>
+			<div ng-if="currentNavItem == 'Active'" ng-repeat='toDoActive in toDosActive' flex>
+			<input type="checkbox" ng-model='toDoActive.done' ng-click="CheckedinActiveMode()"/> <span ng-class="{'done':toDoActive.done }">{{toDoActive.title}}</span>
+			</div>
+			<div ng-if="currentNavItem == 'Completed'" ng-repeat='toDoCompleted in toDosCompleted' flex>
+			<input type="checkbox" ng-model='toDoCompleted.done' /> <span ng-class="{'done':toDoCompleted.done }">{{toDoCompleted.title}}</span>
+			</div>
+			</section>
+    </div>
+  </md-content>
+			<div>
+			<md-button class="md-raised md-primary" style="border-radius:5px 5px 5px 5px;padding-left: 16px" ng-click='deleteCompleted()'>Clear Completed</md-button>
+			 </div>
+			  <md-button class="md-icon-button share" md-no-ink
+				aria-label="share" ng-click='share(menuOption)'> <md-icon
+				md-svg-icon='icon/share_24px.svg'></md-icon> </md-button></md-content>
+				
+		<!--%%%%%%%%%%%%%  Content for Editable table  %%%%%%%%%%%%%%% -->
+				<md-content class="content" id="content" flex layout="column"
+				ng-if="selected.name == 'Editable Table'" ng-controller="EditableTableCtrl"  style= "padding-top: 50px">
+	<div class="container">
+		<h2>Editable Table</h2>
+		<div ng-show="loading"><h3>Loading...</h3></div>
+		<table st-table="display_records"  st-safe-src="employees" class="table table-striped">
+			<thead>
+				<tr>
+					<th>Profile</th>
+					<th width="100px">Name</th>
+					<th st-sort="salary">Salary</th>
+					<th>Age</th>
+					<th>Action</th>
+				</tr>
+				<tr>
+					<th colspan="5">
+						<input st-search placeholder="global search" class="input-sm form-control" type="search"/>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr st-select-row="row" st-select-mode="multiple" ng-repeat="row in display_records">
+					<td><img class="img-thumbnail img-responsive" alt="image" src="icon/user.jpg" style="width: 50px; height: 50px;"/></td>
+					<td>{{row.employee_name}}</td>
+					<td>{{row.employee_salary}}</td>
+					<td>{{row.employee_age}}</td>
+					<td>
+						<a type="button" class="btn btn-sm btn-info">
+							<i class="glyphicon glyphicon-eye-open"></i>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5" class="text-center">
+						<div st-pagination="" st-items-by-page="itemsByPage"></div>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</md-content>
+  </div>
+  </div>
+</body>
+</html>

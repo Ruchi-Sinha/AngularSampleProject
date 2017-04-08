@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<style>
+.done{
+text-decoration : line-through; color : $ccc
+}
+</style>
+
+</head>
+<body>
+<div ng-controller = 'toDoController'>
+<form name = 'frm' ng-submit = 'addToDo()'>
+<input type = 'text' name='newToDo 	' ng-model = 'newToDo' required/>
+<button ng-disabled= 'frm.$invalid'>Go</button>
+<button ng-click = 'deleteCompleted()'>Clear Completed</button>
+</form>
+<ul>
+<li  ng-repeat = 'toDo in toDos'>
+<input type="checkbox" ng-model = 'toDo.done'/>
+<span ng-class = "{'done':toDo.done }">{{toDo.title}}</span>
+
+</li>
+</ul>
+</div>
+</body>
+</html>
